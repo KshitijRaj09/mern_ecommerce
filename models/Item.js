@@ -28,6 +28,6 @@ const ItemSchema = new Schema({
     }
 });
 
-const Item = mongoose.Schema('item', ItemSchema);
+const Item = mongoose.model('item', ItemSchema);
 module.exports = Item;
 

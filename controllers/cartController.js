@@ -1,16 +1,17 @@
 const Cart = require('../models/Cart');
 const { cart_fetch_error, server_error } = require("../constants/constantMsg");
 const Item = require('../models/Item');
+const { deleteOne } = require('../models/Cart');
 
 const getCart = async (req, res) => {
     const userId = req.params.id;
     try {
-        const cartDetails = await Cart.find({ userId });
-        if (cartDetails?.items?.length >= 1) {
+        const cartDetails = await Cart.findOne({ userId });
+        if (cartDetails?.items.length >= 1) {
             return res.json(cartDetails);
         }
         else {
-            res.json([]);
+            res.json(null);
         }
     }
     catch (error) {
@@ -23,41 +24,45 @@ const getCart = async (req, res) => {
 }
 
 const addCart = async (req, res) => {
-    const { productId, quanity } = req.body;
+    console.log("hiiii");
+    const { productId, quantity } = req.body;
+    console.log(productId, quantity)
     const userId = req.params.id;
     try {
-        let cart = await Cart.find({ userId });
-        let item = await Item.find({ _id: productId });
+        let cart = await Cart.findOne({ userId });
+        let item = await Item.findById(productId);
         const { productName, price } = item;
+        console.log(productName, price, cart);
         //check if any item present in cart
-        if (cart.length >= 1) {
+        if (cart) {
             //fetch actual product from cart
             const product = cart.items.find(p => p.productId === productId);
 
-            //check if product present in cart then update the quanity
+            //check if product present in cart then update the quantity
             if (product) {
-                product?.quanity += quanity;
+                product.quantity += quantity;
             }
             else {
                 cart.items.push({ productId, productName, quantity, price });
             }
-            cart.bill += quanity * price;
+            cart.bill += quantity * price;
             cart = await cart.save();
             return res.status(201).json(cart);
         }
 
         else {
+            console.log(quantity * price);
             const newCart = await Cart.create({
                 userId,
-                items: [{ productId, productName, quanity, price }],
-                bill: quanity * price
+                items: [{ productId, productName, quantity, price }],
+                bill: quantity * price
             })
             return res.status(201).json(newCart);
         }
     }
-
     catch (error) {
-        return res.staus(500).json({
+        console.log(error);
+        return res.status(500).json({
             "success": false,
             "error": true,
             "message": cart_fetch_error
@@ -66,23 +71,32 @@ const addCart = async (req, res) => {
 }
 
 //To delete cart items
-const deleteCartItem = (req, res) => {
+const deleteCartItem = async (req, res) => {
     const userId = req.params.userId;
     const productId = req.params.productId;
     try {
-        let cart = await Cart.find({ userId });
+        let cart = await Cart.findOne({ userId });
+        console.log(cart, productId)
         const product = cart.items.find(p => p.productId === productId);
-
+        console.log(product);
         if (product) {
-            cart.bill -= product.quanity * product.price;
+            cart.bill -= product.quantity * product.price;
+            console.log(cart.bill);
             cart.items = cart.items.filter(p => p.productId !== product.productId);
         }
-
+        else {
+            return res.send("Product not in cart");
+        }
         cart = await cart.save();
+        if (cart?.items.length < 1) {
+            await cart.deleteOne({ userId });
+        }
         return res.status(201).json(cart);
     }
 
+
     catch (error) {
+        console.log(error);
         res.status(500).json({
             "success": false,
             "error": true,

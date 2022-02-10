@@ -3,6 +3,7 @@ const config = require("config");
 const { access_denied, invalid_token } = require("../constants/constantMsg");
 
 const authorize = (req, res, next) => {
+    console.log("inside authorize", req.user);
     const token = req.header("x-auth-token");
 
     //check for token

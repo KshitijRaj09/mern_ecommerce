@@ -43,9 +43,9 @@ const createUser = async (name, password, emailID, req, res) => {
                     //Return user details with token
                     return res.json({
                         token, user: {
-                            id: user._id,
-                            name: user.name,
-                            emailID: user.emailID
+                            id: newUser._id,
+                            name: newUser.name,
+                            emailID: newUser.emailID
                         },
                         "success": true,
                         "error": false,
@@ -74,6 +74,7 @@ const signUp = (req, res) => {
 
 //Controller for User Login
 const login = async (req, res) => {
+    console.log("inside login", req.body)
     const { emailID, password } = req.body;
     if (!emailID || !password) {
         return res.status(400).json({
@@ -125,6 +126,7 @@ const login = async (req, res) => {
 
 //Controller to get the user details except password
 const authUser = async (req, res) => {
+    console.log("inside authuser", req.user);
     const user = await User.findById(req.user.id).select("-password");
     return res.json(user)
 

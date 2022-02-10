@@ -2,14 +2,15 @@ const express = require('express');
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
-const usersRouter = require('./routes/userRouter');
+// const Router = require('./routes/itemRouter');
+const router = require("./routes/index");
 
-//const { } = require("./models/User");
 
 const app = express();
 const mongoURI = config.get('mongoURI');
 const PORT = process.env.PORT || 2000;
 
+console.log(express.json())
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'production') {
@@ -18,6 +19,11 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, "ui_reactjs", "build", "index.html"));
     });
 }
+
+app.use("/api", router.itemRouter);
+app.use("/api", router.cartRouter);
+app.use("/api", router.orderRouter);
+app.use("/api", router.userRouter);
 
 async function connectMongoDB() {
     try {
@@ -32,7 +38,7 @@ async function connectMongoDB() {
 }
 
 connectMongoDB();
+// console.log(router);
 
-//app.use("/api/user", usersRouter);
 
 

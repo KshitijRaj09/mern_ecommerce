@@ -13,13 +13,14 @@ const CartSchema = new Schema({
             type: String
         },
         quantity: {
-            type: String,
+            type: Number,
             min: [1, "Order quality shouldn't less than 1"],
             required: true,
             default: 1
         },
         price: {
-            type: Number
+            type: Number,
+            default: 0
         }
     }],
     bill: {
@@ -29,5 +30,5 @@ const CartSchema = new Schema({
     }
 });
 
-const Cart = mongoose.Schema("cart", CartSchema);
+const Cart = mongoose.model("cart", CartSchema);
 module.exports = Cart;
