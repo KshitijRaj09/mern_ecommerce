@@ -53,7 +53,8 @@ export const register = ({ name, password, emailID }) => async (dispatch) => {
 export const login = ({ emailID, password }) => async (dispatch, getState) => {
 
     const body = JSON.stringify({ emailID, password });
-    console.log("inside action", emailID, password);
+    console.log("inside action ", emailID, password);
+    console.log("Testing git branch");
     const config = {
         headers: {
             'Content-type': "application/json"
