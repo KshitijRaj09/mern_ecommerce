@@ -1,8 +1,8 @@
 import React from 'react';
-import ProductPage from './ProductPage';
+import ProductPage from './itemPages/ProductPage';
 
 const HomePage = () => {
-    return(
+    return (
         <div>
             Inside Home Page
             <ProductPage />

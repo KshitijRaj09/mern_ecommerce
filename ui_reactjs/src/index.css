@@ -1,8 +1,10 @@
 *{
     box-sizing: border-box;
     padding : 0;
+    font-family: Helvetica, 'Roboto', sans-serif, Arial;
 }
 
 h6{
     margin: 0;
 }
+

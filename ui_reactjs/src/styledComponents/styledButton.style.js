@@ -13,31 +13,34 @@ const StyledButton = styled.button`
   font-size: 16px;
   font-weight: 500;
   height: 40px;
-  width: 100px;
-  line-height: 20px;
-  list-style: none;
-  margin: 0;
-  outline: none;
-  padding: 10px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: color 100ms;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  width: ${props => props.width || '100px'};
+line - height: 20px;
+list - style: none;
+margin: 0;
+outline: none;
+padding: 10px 16px;
+position: relative;
+text - align: center;
+text - decoration: none;
+transition: color 100ms;
+vertical - align: baseline;
+user - select: none;
+-webkit - user - select: none;
+touch - action: manipulation;
 
-&:hover,
+&: hover,
 &:focus {
-  background-color: #F082AC;
-}`
+  background - color: #F082AC;
+} `
 
 export const CartUpdateButton = styled.button`
-  padding: 7px;
-  font-size: 16px;
-  border-radius: 50%;
-  background-color: ${props => props.color || 'var(--primaryColor)'};
+width: 30px;
+height: 30px;
+font - size: 18px;
+text - align: center;
+border - radius: 10px;
+cursor: pointer;
+background - color: ${props => props.color || '#E1E8EE' || 'var(--primaryColor)'};
 `
 
 export { StyledButton };

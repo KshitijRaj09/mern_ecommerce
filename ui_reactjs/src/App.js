@@ -6,19 +6,23 @@ import RegisterModal from './components/authComponents/RegisterModal';
 import Home from './Pages/HomePage';
 import "./index.css";
 import { Routes, Route } from 'react-router-dom';
-import CartDetails from './Pages/CartDetails';
+import CartDetails from './Pages/cartPages/CartDetails';
 import PageNotFound from './Pages/PageNotFound';
 
 function App() {
   return (
     <div>
       <AppNavbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="cart" element={<CartDetails />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </div>
+      <div style={{
+        backgroundColor: '#F5F5F5'
+      }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="cart" element={<CartDetails />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
+    </div >
   )
 }
 

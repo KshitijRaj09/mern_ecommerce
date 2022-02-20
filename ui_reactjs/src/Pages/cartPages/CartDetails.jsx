@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { CartCard, CheckoutCart, MainCartPage } from '../styledComponents/cartDetails.style';
+import { CartCard, CheckoutCart, MainCartPage } from '../../styledComponents/cartDetails.style';
+import { StyledButton } from '../../styledComponents/styledButton.style';
 import SingleCartDetails from './SingleCartDetails';
 
 const CartDetails = () => {
@@ -22,7 +23,9 @@ const CartDetails = () => {
 export const Checkout = () => {
     return (
         <CheckoutCart>
-            Inside checkout details
+            <h4>Total Items : {20} </h4>
+            <h4>Total Price : ₹ {2000}</h4>
+            <StyledButton width="140px">Checkout</StyledButton>
         </CheckoutCart>
     )
 }
