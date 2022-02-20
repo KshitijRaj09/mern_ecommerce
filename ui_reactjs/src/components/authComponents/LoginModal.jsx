@@ -19,9 +19,10 @@ const LoginModal = () => {
         return state.authReducer});
 
     const error = useSelector(state=>state.errorReducer);
-
+    console.log("inside loginModal", error);
     const dispatch = useDispatch();
-
+    
+    const [registerSelected, setRegisterSelected] = useState(false);
     const [open, setOpen] = useState(false);
     const [state, setState] = useState({
         emailID:'',
@@ -29,14 +30,19 @@ const LoginModal = () => {
     });
     const [msg, setMsg] = useState(null);
 
+    const [count, setCount] = useState(0);
 
     const toggle = () => {
         dispatch(clearErrors());
         setOpen((open)=>!open);
+        setCount(count=>count+1);
     }
 
-    useEffect(()=>{
-        
+    const registerHandler =()=>{
+      toggle();
+      setRegisterSelected(true)
+    }
+    useEffect(()=>{ 
         if(error.id==='LOGIN_FAIL')
             setMsg(error.msg)
         else{
@@ -50,9 +56,7 @@ const LoginModal = () => {
         }
     },[isAuthenticated, error])
 
-    const onChangeHandler = (event) =>{
-        setState({...state,[event.target.name]: event.target.value});
-    }
+    const onChangeHandler = (event) =>setState({...state,[event.target.name]: event.target.value});
 
     const onSubmitHandler = (event) =>{
         event.preventDefault();
@@ -61,9 +65,10 @@ const LoginModal = () => {
         dispatch(login({emailID, password}))
     }
 
+    console.log({open},{count}, {registerSelected});
     return(
     <div>
-      <Button onClick={toggle}>Login</Button>
+      <StyledButton onClick={toggle} color='#456268'>Login</StyledButton>
       <Modal
         open={open}
         onClose={toggle}
@@ -74,10 +79,10 @@ const LoginModal = () => {
         <Avatar variant="circle">
           <LockIcon />
         </Avatar>
-
         <Typography component="h1" variant="h6">
           Sign in
         </Typography>
+        {error.msg && <p>{error.msg.message}</p>}
             <FormStyled onSubmit={onSubmitHandler}>
                 <Textfield
                 id="email"
@@ -101,10 +106,11 @@ const LoginModal = () => {
             </FormStyled>
             <div>
             Don't have an account?
-              <RegisterModal />  
+            <StyledButton onClick={registerHandler}>Register</StyledButton>  
         </div>
         </ModalBox>
       </Modal>
+      {registerSelected && <RegisterModal registerSelected={registerSelected} setRegisterSelected={setRegisterSelected}/>}
     </div>
   );
 }

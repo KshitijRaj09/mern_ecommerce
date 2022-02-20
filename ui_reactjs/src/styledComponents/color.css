@@ -1,5 +1,7 @@
 :root{
     --primaryColor: #EA4C89;
-    --modal-bgColor: #DFD3C3
+    --modal-bgColor: #DFD3C3;
+    --product-name-color : #495371;
+    --product-price-color : #24A19C;
 }
 

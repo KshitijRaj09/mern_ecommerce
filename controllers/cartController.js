@@ -24,7 +24,6 @@ const getCart = async (req, res) => {
 }
 
 const addCart = async (req, res) => {
-    console.log("hiiii");
     const { productId, quantity } = req.body;
     console.log(productId, quantity)
     const userId = req.params.id;
@@ -40,12 +39,12 @@ const addCart = async (req, res) => {
 
             //check if product present in cart then update the quantity
             if (product) {
-                product.quantity += quantity;
+                product.quantity = quantity;
             }
             else {
                 cart.items.push({ productId, productName, quantity, price });
             }
-            cart.bill += quantity * price;
+            cart.bill = cart.items.reduce((sum, p) => (p.price * p.quantity) + sum, 0)
             cart = await cart.save();
             return res.status(201).json(cart);
         }

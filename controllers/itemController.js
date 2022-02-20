@@ -3,8 +3,14 @@ const { product_deleted, product_updated, product_added, server_error } = requir
 
 //To get all the Products
 const getProduct = async (req, res) => {
-    console.log("hiiii");
-    const products = await Item.find({}).sort({ data: -1 });
+    const term = req.query.term;
+    const findItem = term ? { productName: new RegExp("^" + term, "i") } : {};
+    const products = await Item.find(findItem).sort({ data: -1 });
+    if (products.length < 1) {
+        return res.status(404).json({
+            "message": "Product Not Found"
+        })
+    }
     return res.json(products);
 }
 

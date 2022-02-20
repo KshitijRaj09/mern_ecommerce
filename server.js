@@ -10,7 +10,6 @@ const app = express();
 const mongoURI = config.get('mongoURI');
 const PORT = process.env.PORT || 2000;
 
-console.log(express.json())
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'production') {
@@ -38,7 +37,6 @@ async function connectMongoDB() {
 }
 
 connectMongoDB();
-// console.log(router);
 
 
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loginApi } from "../../api";
 import {
     USER_LOADING, USER_LOADED, AUTH_ERROR,
     LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS,
@@ -17,8 +18,8 @@ export const loadUser = () => async (dispatch, getState) => {
             payload: data
         })
     }
-    catch (error) {
-        dispatch(showError(error.response.data, error.response.status));
+    catch ({ response }) {
+        dispatch(showError(response.data, response.status));
         dispatch({
             type: AUTH_ERROR,
         });
@@ -42,8 +43,8 @@ export const register = ({ name, password, emailID }) => async (dispatch) => {
             payload: data
         })
     }
-    catch (error) {
-        dispatch(showError(error.response.data, error.response.status, REGISTER_FAIL));
+    catch ({ response }) {
+        dispatch(showError(response.data, response.status, REGISTER_FAIL));
         dispatch({
             type: REGISTER_FAIL,
         })
@@ -52,28 +53,22 @@ export const register = ({ name, password, emailID }) => async (dispatch) => {
 
 export const login = ({ emailID, password }) => async (dispatch, getState) => {
 
-    const body = JSON.stringify({ emailID, password });
-    console.log("inside action", emailID, password);
-    const config = {
-        headers: {
-            'Content-type': "application/json"
-        }
-    }
-
     try {
-        const { data } = await axios.post("/api/login", body, config);
+        const data = await loginApi({ emailID, password });
         dispatch({
             type: LOGIN_SUCCESS,
             payload: data
         });
     }
-    catch (error) {
-        dispatch(showError(error.response.data, error.response.status, LOGIN_FAIL));
+    catch ({ response }) {
+        console.log("error : ", response);
+        dispatch(showError(response.data, response.status, LOGIN_FAIL));
         dispatch({ type: LOGIN_FAIL });
     }
 }
 
 export const logout = () => {
+    localStorage.clear();
     return { type: LOGOUT_SUCCESS }
 }
 

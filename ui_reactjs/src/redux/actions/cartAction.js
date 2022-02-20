@@ -1,6 +1,6 @@
 import * as cartAction from "../actionTypes";
 import axios from "axios";
-import { showError } from "../actions/ErrorActions";
+import { showError } from "../actions/errorActions";
 
 
 export const setCartLoading = () => {
@@ -9,7 +9,15 @@ export const setCartLoading = () => {
     }
 }
 
-export const addToCart = (userId, productId, quantity) => async (dispatch, getState) => {
+export const setCartCount = (totalCartCount) => {
+    return {
+        type: cartAction.CART_COUNT,
+        payload: totalCartCount
+    }
+}
+
+export const addToCart = (productId, quantity, userId = null) => async (dispatch, getState) => {
+    console.log("inside addtocart action", productId, quantity, userId);
     const body = JSON.stringify({ productId, quantity });
     const config = {
         headers: {

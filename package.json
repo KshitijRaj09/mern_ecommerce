@@ -8,7 +8,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix ui_reactjs",
-    "devstart": "concurrently \"npm run server\" \"npm run client\""
+    "startdev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
     "Mongodb",

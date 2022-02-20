@@ -10,6 +10,7 @@ export const CART_LOADING = 'CART_LOADING';
 export const GET_CART = 'GET_CART';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const DELETE_FROM_CART = 'DELETE_FROM_CART';
+export const CART_COUNT = 'CART_COUNT';
 
 //action types for orders
 export const ORDERS_LOADING = 'ORDERS_LOADING';

@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { showError } from "./ErrorActions";
+import { showError } from "./errorActions";
 import * as itemsAction from "../actionTypes";
 
-export const getItems = () => async (dispatch) => {
+export const getItems = (term = '') => async (dispatch) => {
     dispatch(setItemsLoading());
     try {
-        const { data } = await axios.get("/api/items");
+        const { data } = await axios.get(`/api/items?term=${term}`);
         dispatch({ type: itemsAction.GET_ITEMS, payload: data });
     }
     catch (error) {
-        dispatch(showError(error.response.data, error.response.status))
+        dispatch(showError(error.response.data, error.response.status));
     }
 }
 

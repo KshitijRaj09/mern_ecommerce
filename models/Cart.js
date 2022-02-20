@@ -14,9 +14,7 @@ const CartSchema = new Schema({
         },
         quantity: {
             type: Number,
-            min: [1, "Order quality shouldn't less than 1"],
             required: true,
-            default: 1
         },
         price: {
             type: Number,

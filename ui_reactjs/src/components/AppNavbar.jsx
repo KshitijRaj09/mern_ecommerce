@@ -1,23 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import {useSelector} from "react-redux";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import {useDispatch, useSelector} from "react-redux";
+import {Container,Avatar, Tooltip,
+  Box, AppBar, Toolbar, IconButton, 
+  Typography, Menu, InputBase, Badge } from '@mui/material';
+  import MenuIcon from '@mui/icons-material/Menu';
 import { styled, alpha } from '@mui/material/styles';
-import { InputBase } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import LoginModal from "./authComponents/LoginModal";
 import Logout from "./authComponents/Logout";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { MenuDiv } from "../styledComponents/menuDiv.style";
+import { getItems } from "../redux/actions/itemsAction";
+import { Link } from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,13 +55,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const guestLinks = ['Cart',<LoginModal/>];
-const authLinks = ['Cart', 'Orders', <Logout />];
+const guestLinks = [<Link to="cart"> <ShoppingCartIcon/> </Link>, <LoginModal/>];
+const authLinksMobile = [<Link to="cart"> <ShoppingCartIcon/> </Link>, 'Orders', <Logout/>];
+const authLinksDesktop = ['Orders', <Logout/>];
 
 const AppNavbar = () => {
   const {isAuthenticated, user} = useSelector((state)=> state.authReducer);
+  
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const {cartCount} = useSelector(state=>state.cartReducer);
+
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -85,7 +86,7 @@ const AppNavbar = () => {
 
   return (
     <AppBar position="static" sx={{backgroundColor:'#456268', color:'#FBF7F0'}}>
-      <Container maxWidth minWidth="md">
+      <Container maxWidth>
         <Toolbar disableGutters sx={{display:"flex"}}>
           <Typography
             variant="h6"
@@ -96,9 +97,9 @@ const AppNavbar = () => {
             LOGO
           </Typography>
           <Typography>
-            Home
+            <Link to="/">Home</Link>
           </Typography>
-          <Search>
+          <Search onChange={({target})=>dispatch(getItems(target.value))}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -131,42 +132,43 @@ const AppNavbar = () => {
                   vertical: 'top',
                   horizontal: 'left',
                 }}
+                MenuListProps={{disablePadding:true}}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
               >
                 {guestLinks.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
+                  <MenuDiv key={page} onClick={handleCloseNavMenu} margin='0'>
+                    {page}
+                  </MenuDiv>
                 ))}
               </Menu>
             </Box><Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
                 {guestLinks.map((page) => (
-                  <Button
+                  <MenuDiv
                     key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    margin={"0 2px"}
+                    width="70px"
                   >
-                    {page}
-                  </Button>
+                    {(page.type===ShoppingCartIcon)? <Badge badgeContent={cartCount} color="primary">{page}</Badge>:page}
+                    {console.log(page)}
+                  </MenuDiv>
                 ))}
               </Box></>
           }
           {(user?.name)&&
           <Box sx={{ display:"flex", flexGrow: 1, justifyContent:"flex-end", alignItems:"center", gap:"20px" }}>
             <Typography textAlign="center" sx={{display:{xs:'none', md:'flex'}}}>
-            CART
+              <Badge badgeContent={5}>
+                <ShoppingCartIcon />
+              </Badge>
           </Typography>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <MenuDiv onClick={handleOpenUserMenu} width="70px">
                 <Avatar alt="Remy Sharp" src="" />
-              </IconButton>
+              </MenuDiv>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '45px', display:{xs:'none', md:'block'}}}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -180,15 +182,37 @@ const AppNavbar = () => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              MenuListProps={{disablePadding:true}}
             >
-              {authLinks.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+              {authLinksDesktop.map((setting) => (
+                  <MenuDiv key={setting}>{setting}</MenuDiv>
+                
+              ))}
+            </Menu>
+            <Menu
+              sx={{ mt: '45px', display:{xs:'block', md:'none' }}}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+              MenuListProps={{disablePadding:true}}
+            >
+              {authLinksMobile.map((setting) => (
+                <MenuDiv key={setting}>{setting}</MenuDiv>
               ))}
             </Menu>
           </Box>
           }
+          {console.log({cartCount})}
         </Toolbar>
       </Container>
     </AppBar>

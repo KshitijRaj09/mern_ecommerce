@@ -12,7 +12,7 @@ import { StyledButton } from "../../styledComponents/styledButton.style";
 import { FormStyled, ModalBox } from "../../styledComponents/modalBox.style";
 import LoginModal from "./LoginModal";
 
-const RegisterModal = () => {
+const RegisterModal = ({registerSelected, setRegisterSelected}) => {
 
     const {isAuthenticated} = useSelector(state=>{
         console.log(state.authReducer)
@@ -22,7 +22,8 @@ const RegisterModal = () => {
 
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(false);
+    //const [open, setOpen] = useState(registerSelected);
+    const [count, setCount] = useState(0);
     const [state, setState] = useState({
         name:'',
         emailID:'',
@@ -32,7 +33,9 @@ const RegisterModal = () => {
 
     const toggle = () => {
         dispatch(clearErrors())
-        setOpen((open)=>!open);
+        //setOpen(!open);
+        setRegisterSelected(false)
+        setCount((count)=>count+1);
     }
 
     useEffect(()=>{
@@ -42,7 +45,7 @@ const RegisterModal = () => {
             setMsg(null)
         }
 
-        if(open){
+        if(registerSelected){
             if(isAuthenticated){
                 toggle();
             }
@@ -59,12 +62,12 @@ const RegisterModal = () => {
         const {name, emailID, password} = state;
         dispatch(register({name, emailID, password}))
     }
-
+    console.log({registerSelected},{count});
     return(
     <div>
-      <Button onClick={toggle}>Register</Button>
+
       <Modal
-        open={open}
+        open={registerSelected}
         onClose={toggle}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
