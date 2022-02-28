@@ -1,0 +1,5 @@
+{
+    "mongoURI" : "mongodb+srv://Kshitij:QGd38DZHRv7Tu8q6@kshitijecommerce.vta6v.mongodb.net/KshitijEcommerce?retryWrites=true&w=majority",
+    "jwtSecretCode":"09f26e402586e2faa8da4c98a35f1b20d6b043d90",
+    "stripeSecretKey": "09f26e402586e2faa12hj598a35f1b20d6b0km5j01g"
+}
