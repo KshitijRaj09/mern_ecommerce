@@ -32,7 +32,6 @@ const userReducer = (state = initialState, action) => {
         case userActions.LOGOUT_SUCCESS:
         case userActions.REGISTER_FAIL:
             localStorage.removeItem('token');
-            console.log("register fail")
             return {
                 ...state,
                 token: null,

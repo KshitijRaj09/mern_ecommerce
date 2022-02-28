@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Container,Avatar, Tooltip,
-  Box, AppBar, Toolbar, IconButton, 
-  Typography, Menu, InputBase, Badge } from '@mui/material';
-  import MenuIcon from '@mui/icons-material/Menu';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Container, Avatar, Tooltip,
+  Box, AppBar, Toolbar, IconButton,
+  Typography, Menu, InputBase, Badge
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import LoginModal from "./authComponents/LoginModal";
@@ -13,6 +15,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { MenuDiv } from "../styledComponents/menuDiv.style";
 import { getItems } from "../redux/actions/itemsAction";
 import { Link } from "react-router-dom";
+import { useCartUpdate } from "../hooks/useCartUpdate";
+import { StyledLink } from "../styledComponents/StyledLink.style";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -22,7 +26,7 @@ const Search = styled('div')(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: '4px',
-  marginRight:'3px',
+  marginRight: '3px',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(2),
     width: 'auto',
@@ -55,17 +59,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-const guestLinks = [<Link to="cart"> <ShoppingCartIcon/> </Link>, <LoginModal/>];
-const authLinksMobile = [<Link to="cart"> <ShoppingCartIcon/> </Link>, 'Orders', <Logout/>];
-const authLinksDesktop = ['Orders', <Logout/>];
+const shoppingIcon = <StyledLink to="cart"> <Badge badgeContent={10} color='primary'> <ShoppingCartIcon /> </Badge> </StyledLink>;
+const guestLinks = [shoppingIcon, <LoginModal />];
+const authLinksMobile = [shoppingIcon, 'Orders', <Logout />];
+const authLinksDesktop = ['Orders', <Logout />];
 
 const AppNavbar = () => {
-  const {isAuthenticated, user} = useSelector((state)=> state.authReducer);
-  
+  const { isAuthenticated, user } = useSelector((state) => state.authReducer);
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const {cartCount} = useSelector(state=>state.cartReducer);
+  //const { totalCartItems } = useSelector(state => state.cartReducer);
 
   const dispatch = useDispatch();
 
@@ -85,21 +90,21 @@ const AppNavbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{backgroundColor:'#456268', color:'#FBF7F0'}}>
+    <AppBar position="static" sx={{ backgroundColor: '#456268', color: '#FBF7F0' }}>
       <Container maxWidth>
-        <Toolbar disableGutters sx={{display:"flex"}}>
+        <Toolbar disableGutters sx={{ display: "flex" }}>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs:'none', md: 'flex' }}}
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
             LOGO
           </Typography>
           <Typography>
-            <Link to="/">Home</Link>
+            <StyledLink to="/">Home</StyledLink>
           </Typography>
-          <Search onChange={({target})=>dispatch(getItems(target.value))}>
+          <Search onChange={({ target }) => dispatch(getItems(target.value))}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -108,8 +113,8 @@ const AppNavbar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {!(user?.name)&&
-          <><Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end'}}>
+          {!(user?.name) &&
+            <><Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end' }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -132,7 +137,7 @@ const AppNavbar = () => {
                   vertical: 'top',
                   horizontal: 'left',
                 }}
-                MenuListProps={{disablePadding:true}}
+                MenuListProps={{ disablePadding: true }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
               >
@@ -149,70 +154,65 @@ const AppNavbar = () => {
                     margin={"0 2px"}
                     width="70px"
                   >
-                    {(page.type===ShoppingCartIcon)? <Badge badgeContent={cartCount} color="primary">{page}</Badge>:page}
-                    {console.log(page)}
+                    {page}
                   </MenuDiv>
                 ))}
               </Box></>
           }
-          {(user?.name)&&
-          <Box sx={{ display:"flex", flexGrow: 1, justifyContent:"flex-end", alignItems:"center", gap:"20px" }}>
-            <Typography textAlign="center" sx={{display:{xs:'none', md:'flex'}}}>
-              <Badge badgeContent={5}>
-                <ShoppingCartIcon />
-              </Badge>
-          </Typography>
-            <Tooltip title="Open settings">
-              <MenuDiv onClick={handleOpenUserMenu} width="70px">
-                <Avatar alt="Remy Sharp" src="" />
-              </MenuDiv>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px', display:{xs:'none', md:'block'}}}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              MenuListProps={{disablePadding:true}}
-            >
-              {authLinksDesktop.map((setting) => (
+          {(user?.name) &&
+            <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end", alignItems: "center", gap: "20px" }}>
+              <Typography textAlign="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
+                {shoppingIcon}
+              </Typography>
+              <Tooltip title="Open settings">
+                <MenuDiv onClick={handleOpenUserMenu} width="70px">
+                  <Avatar alt="Remy Sharp" src="" />
+                </MenuDiv>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px', display: { xs: 'none', md: 'block' } }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+                MenuListProps={{ disablePadding: true }}
+              >
+                {authLinksDesktop.map((setting) => (
                   <MenuDiv key={setting}>{setting}</MenuDiv>
-                
-              ))}
-            </Menu>
-            <Menu
-              sx={{ mt: '45px', display:{xs:'block', md:'none' }}}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              MenuListProps={{disablePadding:true}}
-            >
-              {authLinksMobile.map((setting) => (
-                <MenuDiv key={setting}>{setting}</MenuDiv>
-              ))}
-            </Menu>
-          </Box>
+                ))}
+              </Menu>
+              <Menu
+                sx={{ mt: '45px', display: { xs: 'block', md: 'none' } }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+                MenuListProps={{ disablePadding: true }}
+              >
+                {authLinksMobile.map((setting) => (
+                  <MenuDiv key={setting}>{setting}</MenuDiv>
+                ))}
+              </Menu>
+            </Box>
           }
-          {console.log({cartCount})}
         </Toolbar>
       </Container>
     </AppBar>

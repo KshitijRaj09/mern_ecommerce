@@ -1,33 +1,34 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
-import {useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { register } from "../../redux/actions/authUserAction";
-import {clearErrors} from "../../redux/actions/errorActions";
+import { clearErrors } from "../../redux/actions/errorActions";
 
-import {Button, Modal, Typography, Avatar} from "@mui/material";
+import { Button, Modal, Typography, Avatar } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
 import { Textfield } from "../../styledComponents/textfield.style";
 import { StyledButton } from "../../styledComponents/styledButton.style";
 import { FormStyled, ModalBox } from "../../styledComponents/modalBox.style";
 import LoginModal from "./LoginModal";
 
-const RegisterModal = ({registerSelected, setRegisterSelected}) => {
+const RegisterModal = ({ registerSelected, setRegisterSelected }) => {
 
-    const {isAuthenticated} = useSelector(state=>{
-        console.log(state.authReducer)
-        return state.authReducer});
+    const { isAuthenticated } = useSelector(state => {
 
-    const error = useSelector(state=>state.errorReducer);
+        return state.authReducer
+    });
+
+    const error = useSelector(state => state.errorReducer);
 
     const dispatch = useDispatch();
 
     //const [open, setOpen] = useState(registerSelected);
     const [count, setCount] = useState(0);
     const [state, setState] = useState({
-        name:'',
-        emailID:'',
-        password:''
+        name: '',
+        emailID: '',
+        password: ''
     });
     const [msg, setMsg] = useState(null);
 
@@ -35,82 +36,82 @@ const RegisterModal = ({registerSelected, setRegisterSelected}) => {
         dispatch(clearErrors())
         //setOpen(!open);
         setRegisterSelected(false)
-        setCount((count)=>count+1);
+        setCount((count) => count + 1);
     }
 
-    useEffect(()=>{
-        if(error.id==='REGISTER_FAIL')
+    useEffect(() => {
+        if (error.id === 'REGISTER_FAIL')
             setMsg(error.msg)
-        else{
+        else {
             setMsg(null)
         }
 
-        if(registerSelected){
-            if(isAuthenticated){
+        if (registerSelected) {
+            if (isAuthenticated) {
                 toggle();
             }
         }
-    },[isAuthenticated, error])
+    }, [isAuthenticated, error])
 
-    const onChangeHandler = (event) =>{
-        setState({...state,[event.target.name]: event.target.value});
+    const onChangeHandler = (event) => {
+        setState({ ...state, [event.target.name]: event.target.value });
     }
 
-    const onSubmitHandler = (event) =>{
+    const onSubmitHandler = (event) => {
         event.preventDefault();
-        console.log(state)
-        const {name, emailID, password} = state;
-        dispatch(register({name, emailID, password}))
+
+        const { name, emailID, password } = state;
+        dispatch(register({ name, emailID, password }))
     }
-    console.log({registerSelected},{count});
-    return(
-    <div>
 
-      <Modal
-        open={registerSelected}
-        onClose={toggle}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBox> 
-        <Avatar variant="circle">
-          <LockIcon />
-        </Avatar>
+    return (
+        <div>
 
-        <Typography component="h1" variant="h6">
-          Register
-        </Typography>
-            <FormStyled onSubmit={onSubmitHandler} className="modal-container">
-                <Textfield
-                id="name"
-                label="Name"
-                type="text"
-                name="name"
-                placeholder="Name"
-                onChange={onChangeHandler}
-                />
-                <Textfield
-                id="email"
-                label="E-Mail"
-                type="email"
-                name="emailID"
-                placeholder="Email-Id"
-                onChange={onChangeHandler}
-                />
-                <Textfield
-                id="password"
-                label="Password"
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={onChangeHandler}
-                />
-                <StyledButton type="submit">Submit</StyledButton>
-            </FormStyled>
-        </ModalBox>
-      </Modal>
-    </div>
-  );
+            <Modal
+                open={registerSelected}
+                onClose={toggle}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <ModalBox>
+                    <Avatar variant="circle">
+                        <LockIcon />
+                    </Avatar>
+
+                    <Typography component="h1" variant="h6">
+                        Register
+                    </Typography>
+                    <FormStyled onSubmit={onSubmitHandler} className="modal-container">
+                        <Textfield
+                            id="name"
+                            label="Name"
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            onChange={onChangeHandler}
+                        />
+                        <Textfield
+                            id="email"
+                            label="E-Mail"
+                            type="email"
+                            name="emailID"
+                            placeholder="Email-Id"
+                            onChange={onChangeHandler}
+                        />
+                        <Textfield
+                            id="password"
+                            label="Password"
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            onChange={onChangeHandler}
+                        />
+                        <StyledButton type="submit">Submit</StyledButton>
+                    </FormStyled>
+                </ModalBox>
+            </Modal>
+        </div>
+    );
 }
 
 RegisterModal.propTypes = {

@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 
 const Logout = () => {
     const dispatch = useDispatch()
-    return(
+    return (
         <div>
-            <Typography onClick={()=>dispatch(logout())}>
+            <Typography sx={{ cursor: 'pointer' }} onClick={() => dispatch(logout())}>
                 Logout
             </Typography>
         </div>

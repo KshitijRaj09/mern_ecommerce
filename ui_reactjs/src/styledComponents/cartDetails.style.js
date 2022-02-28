@@ -60,10 +60,11 @@ export const CheckoutCart = styled.div`
     padding : 20px;
     width:max(20vw, 340px);
     border-radius: 20px;
-    box-shadow: 0 0 10px;
+    box-shadow : 0 0 10px 2px;
     & h4{
-        margin: 10px;
+        margin: 10px 0;
         font-weight: 500;
+        padding: 0;
     }
 `
 

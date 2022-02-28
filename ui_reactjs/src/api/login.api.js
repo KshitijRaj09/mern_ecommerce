@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export const loginApi = async (body) => {
     body = JSON.stringify(body);
-    console.log("inside action", body);
     const config = {
         headers: {
             'Content-type': "application/json"
@@ -13,7 +12,7 @@ export const loginApi = async (body) => {
         return data;
     }
     catch (error) {
-        console.log(error.response);
+
         return Promise.reject(error);
     }
 

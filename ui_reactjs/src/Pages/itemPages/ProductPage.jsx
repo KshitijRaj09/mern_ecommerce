@@ -13,7 +13,6 @@ const ProductPage = () => {
 
     useEffect(() => {
         dispatch(getItems());
-        console.log('inside useffect productpage');
     }, []);
 
 

@@ -25,3 +25,13 @@ export const FormStyled = styled.form`
  align-items: center;
  flex-direction: column;
 `
+
+export const Message = styled.div`
+display: flex;
+padding: 20px;
+height: 300px;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+gap: 15px;
+`

@@ -61,7 +61,6 @@ export const login = ({ emailID, password }) => async (dispatch, getState) => {
         });
     }
     catch ({ response }) {
-        console.log("error : ", response);
         dispatch(showError(response.data, response.status, LOGIN_FAIL));
         dispatch({ type: LOGIN_FAIL });
     }

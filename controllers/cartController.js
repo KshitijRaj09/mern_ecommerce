@@ -30,7 +30,7 @@ const addCart = async (req, res) => {
     try {
         let cart = await Cart.findOne({ userId });
         let item = await Item.findById(productId);
-        const { productName, price } = item;
+        const { productName, price, imageURL, category } = item;
         console.log(productName, price, cart);
         //check if any item present in cart
         if (cart) {
@@ -42,7 +42,7 @@ const addCart = async (req, res) => {
                 product.quantity = quantity;
             }
             else {
-                cart.items.push({ productId, productName, quantity, price });
+                cart.items.push({ productId, productName, quantity, imageURL, category, price });
             }
             cart.bill = cart.items.reduce((sum, p) => (p.price * p.quantity) + sum, 0)
             cart = await cart.save();
@@ -53,7 +53,7 @@ const addCart = async (req, res) => {
             console.log(quantity * price);
             const newCart = await Cart.create({
                 userId,
-                items: [{ productId, productName, quantity, price }],
+                items: [{ productId, productName, quantity, imageURL, category, price }],
                 bill: quantity * price
             })
             return res.status(201).json(newCart);
@@ -104,4 +104,54 @@ const deleteCartItem = async (req, res) => {
     }
 }
 
-module.exports = { getCart, addCart, deleteCartItem };
+
+const cartLocalToDB = async (req, res) => {
+    const userId = req.params.userId;
+    const body = req.body;
+    let cart = await Cart.findOne({ userId });
+    let updateCart = [];
+    try {
+        for (let itemId in body) {
+            let item = await Item.findById(itemId);
+            const quantity = body[itemId];
+            const { productName, price, imageURL, category } = item;
+            if (cart) {
+                //fetch actual product from cart
+                const product = cart.items.find(p => p.productId === itemId);
+
+                //check if product present in cart then update the quantity
+                if (product) {
+                    product.quantity = quantity;
+                }
+                else {
+                    cart.items.push({ itemId, productName, quantity, category, imageURL, price });
+                }
+                cart.bill = cart.items.reduce((sum, p) => (p.price * p.quantity) + sum, 0)
+                cart = await cart.save();
+                return res.status(201).json(cart);
+            }
+
+            else {
+                console.log(quantity * price);
+                const newCart = await Cart.create({
+                    userId,
+                    items: [{ itemId, productName, quantity, imageURL, price }],
+                    bill: quantity * price
+                })
+                updateCart.push(newCart)
+
+            }
+        }
+        return res.status(201).json(updateCart);
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            "success": false,
+            "error": true,
+            "message": cart_fetch_error
+        })
+    }
+}
+
+module.exports = { getCart, addCart, deleteCartItem, cartLocalToDB };

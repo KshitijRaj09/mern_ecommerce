@@ -7,6 +7,7 @@ export const MenuDiv = styled.div`
     display: flex;
     justify-Content: center;
     align-items: center;
-    padding: 3px;
+    padding: 7px 2px;
     margin: ${props => props.margin};
+    height: 45px;
 `

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ProductGrid = styled.div`
     max-width: 1200px;
+    padding: 20px 0;
     margin: 0 auto;
     display: grid;
     gap: 30px 10px;

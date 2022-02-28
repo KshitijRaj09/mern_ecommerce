@@ -9,6 +9,9 @@ const CartSchema = new Schema({
         productId: {
             type: String
         },
+        imageURL: {
+            type: String
+        },
         productName: {
             type: String
         },
@@ -19,6 +22,9 @@ const CartSchema = new Schema({
         price: {
             type: Number,
             default: 0
+        },
+        category: {
+            type: String
         }
     }],
     bill: {
