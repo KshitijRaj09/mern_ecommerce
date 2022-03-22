@@ -11,6 +11,11 @@ export const GET_CART = 'GET_CART';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const DELETE_FROM_CART = 'DELETE_FROM_CART';
 export const CART_COUNT = 'CART_COUNT';
+export const CLEAR_CART = 'CLEAR_CART';
+
+//action types for favourite
+export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE';
+export const REMOVE_FROM_FAVOURITE = 'REMOVE_FROM_FAVOURITE';
 
 //action types for orders
 export const ORDERS_LOADING = 'ORDERS_LOADING';
