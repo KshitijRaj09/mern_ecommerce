@@ -1,7 +1,7 @@
-:root{
-    --primaryColor: #EA4C89;
-    --modal-bgColor: #DFD3C3;
-    --product-name-color : #495371;
-    --product-price-color : #24A19C;
+:root {
+  --primaryColor: #ea4c89;
+  --modal-bgColor: #dfd3c3;
+  --product-name-color: #495371;
+  --product-price-color: #24a19c;
+  --footer-bgColor: #b7cadb;
 }
-

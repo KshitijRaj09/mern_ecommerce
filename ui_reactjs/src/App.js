@@ -4,6 +4,7 @@ import './index.css';
 import { Routes, Route } from 'react-router-dom';
 import CartDetails from './Pages/cartPages/CartDetails';
 import PageNotFound from './Pages/PageNotFound';
+import Footer from './Pages/Footer';
 
 function App() {
   if (process.env.NODE_ENV !== 'development') {
@@ -23,6 +24,7 @@ function App() {
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </div>
+      <Footer />
     </div>
   );
 }
