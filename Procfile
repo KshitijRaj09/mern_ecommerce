@@ -1,1 +1,1 @@
-web: npm run startdev
+web: node server.js 
