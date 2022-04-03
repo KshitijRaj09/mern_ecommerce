@@ -3,13 +3,37 @@ import { clearErrors, showError } from './errorActions';
 import * as itemsAction from '../actionTypes';
 
 export const getItems =
-  (term = '') =>
+  (term = '', pageNumber = 0) =>
   async (dispatch) => {
     dispatch(setItemsLoading());
     try {
-      const { data, status } = await axios.get(`/api/items?term=${term}`);
+      const { data, status } = await axios.get(
+        `/api/items?term=${term}&pageNumber=${pageNumber}`
+      );
       dispatch(clearErrors());
-      dispatch({ type: itemsAction.GET_ITEMS, payload: data.products });
+      const { hasMoreData, products } = data;
+      dispatch({
+        type: itemsAction.GET_ITEMS,
+        payload: { products, hasMoreData },
+      });
+    } catch (error) {
+      dispatch(showError(error.response.data, error.response.status));
+    }
+  };
+
+export const getItemsOnScroll =
+  (term = '', pageNumber = 1) =>
+  async (dispatch) => {
+    // dispatch(setItemsLoading())
+    try {
+      const { data, status } = await axios.get(
+        `/api/itemsOnScroll?term=${term}&pageNumber=${pageNumber}`
+      );
+      const { products, hasMoreData } = data;
+      dispatch({
+        type: itemsAction.GET_ITEMS_ON_SCROLL,
+        payload: { products, hasMoreData },
+      });
     } catch (error) {
       dispatch(showError(error.response.data, error.response.status));
     }

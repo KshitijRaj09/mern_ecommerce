@@ -36,18 +36,6 @@ async function connectMongoDB() {
       });
     }
 
-    if (process.env.NODE_ENV === 'production') {
-      app.use(express.static(path.join(__dirname, 'ui_reactjs', 'build')));
-      app.get('*', (req, res) => {
-        res.sendFile(
-          path.resolve(__dirname, 'ui_reactjs', 'build', 'index.html')
-        );
-      });
-    } else {
-      app.get('/', (req, res) => {
-        res.send('API is running');
-      });
-    }
     app.listen(PORT, () => {
       console.log(
         `Server listening @ PORT ${PORT} && MongoDB running @ PORT ${connections[0].port})`

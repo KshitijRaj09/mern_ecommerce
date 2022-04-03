@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -23,6 +23,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { MenuDiv } from '../styledComponents/menuDiv.style';
 import { getItems } from '../redux/actions/itemsAction';
 import { StyledLink } from '../styledComponents/StyledLink.style';
+import { SearchTermContext } from '../App';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,14 +70,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 let timerId = null;
 const AppNavbar = () => {
   const firstRender = useRef(false);
+  const { searchTerm, setSearchTerm, setPageNumber } =
+    useContext(SearchTermContext);
   const { isAuthenticated, user } = useSelector((state) => state.authReducer);
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const { cartCount } = useSelector((state) => state.cartReducer);
-
-  const [searchTerm, setSearchTerm] = useState('');
 
   const dispatch = useDispatch();
 
@@ -109,21 +110,6 @@ const AppNavbar = () => {
   const authLinksMobile = [shoppingIcon, 'Orders', <Logout />];
   const authLinksDesktop = ['Orders', <Logout />];
 
-  const debouncedSearch = () => {
-    dispatch(getItems(searchTerm));
-  };
-
-  useEffect(() => {
-    if (firstRender.current)
-      timerId = setTimeout(() => {
-        debouncedSearch();
-      }, 1000);
-    firstRender.current = true;
-    return () => {
-      return clearTimeout(timerId);
-    };
-  }, [searchTerm]);
-
   return (
     <AppBar
       position='static'
@@ -142,7 +128,12 @@ const AppNavbar = () => {
           <Typography>
             <StyledLink to='/'>Home</StyledLink>
           </Typography>
-          <Search onChange={({ target }) => setSearchTerm(target.value)}>
+          <Search
+            onChange={({ target }) => {
+              setSearchTerm(target.value);
+              setPageNumber(0);
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
