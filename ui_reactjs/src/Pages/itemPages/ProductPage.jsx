@@ -22,6 +22,7 @@ const ProductPage = () => {
   const endOfPage = useRef(null);
   const { searchTerm, pageNumber, setPageNumber } =
     useContext(SearchTermContext);
+  const renderFirst = useRef(true);
 
   const observerCallback = (enteries) => {
     const [firstEntry] = enteries;
@@ -37,9 +38,11 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
+    if (renderFirst.current) dispatch(getItems(searchTerm, pageNumber));
     timerId = setTimeout(() => {
       debouncedFetchProducts();
     }, 1000);
+    renderFirst.current = false;
     return () => clearTimeout(timerId);
   }, [pageNumber, searchTerm]);
 
