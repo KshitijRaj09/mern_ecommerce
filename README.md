@@ -1,6 +1,6 @@
 # mern_ecommerce
 MERN Ecommerce using MongoDB, Nodejs, Express, React, Redux and much more
-E-commerce website features would be : login, resgiter, add product, delete product, update product, get all products, add cart, update cart, delete cart, get cart, place order. 
+E-commerce website features would be : login, resgiter, add product, delete product, update product, get all products, add cart, update cart, delete cart, get cart, place order.
 
 
 <img width="1761" alt="image" src="https://user-images.githubusercontent.com/59702912/159576692-552d0beb-afd7-4f3d-a148-9b765243b66f.png">
