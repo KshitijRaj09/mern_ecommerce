@@ -10,7 +10,7 @@
       "client": "npm start --prefix ui_reactjs",
       "buildclient": "npm install --prefix ui_reactjs && npm run build --prefix ui_reactjs",
       "startdev": "concurrently \"npm run server\" \"npm run client\"",
-      "build": "concurrently \"npm run start\" \"npm run buildclient\"",
+      "build": "npm run buildclient && npm run start",
       "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ui_reactjs && npm run build --prefix ui_reactjs"
    },
    "keywords": [
