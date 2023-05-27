@@ -1,36 +1,38 @@
 {
-  "name": "mern_ecommerce_root",
-  "version": "1.0.0",
-  "description": "MERN Ecommerce Website using MongoDB, Express, Reactjs, Nodejs",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix ui_reactjs",
-    "startdev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ui_reactjs && npm run build --prefix ui_reactjs"
-  },
-  "keywords": [
-    "Mongodb",
-    "Express",
-    "Reactjs",
-    "Nodejs"
-  ],
-  "author": "Kshitij Raj",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "concurrently": "^7.0.0",
-    "config": "^3.3.7",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.6",
-    "stripe": "^8.197.0",
-    "validator": "^13.7.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  }
+   "name": "mern_ecommerce",
+   "version": "1.0.0",
+   "description": "MERN Ecommerce Website using MongoDB, Express, Reactjs, Nodejs",
+   "main": "server.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node server.js",
+      "server": "nodemon server.js",
+      "client": "npm start --prefix ui_reactjs",
+      "buildclient": "npm install --prefix ui_reactjs && npm run build --prefix ui_reactjs",
+      "startdev": "concurrently \"npm run server\" \"npm run client\"",
+      "build": "concurrently \"npm run server\" \"npm run buildclient\"",
+      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ui_reactjs && npm run build --prefix ui_reactjs"
+   },
+   "keywords": [
+      "Mongodb",
+      "Express",
+      "Reactjs",
+      "Nodejs"
+   ],
+   "author": "Kshitij Raj",
+   "license": "ISC",
+   "dependencies": {
+      "bcrypt": "^5.0.1",
+      "concurrently": "^7.0.0",
+      "config": "^3.3.7",
+      "dotenv": "^16.0.0",
+      "express": "^4.17.2",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^6.1.6",
+      "stripe": "^8.197.0",
+      "validator": "^13.7.0"
+   },
+   "devDependencies": {
+      "nodemon": "^2.0.15"
+   }
 }
