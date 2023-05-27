@@ -1,20 +1,20 @@
-import axios from 'axios';
-import { clearErrors, showError } from './errorActions';
-import * as itemsAction from '../actionTypes';
+import {clearErrors, showError} from "./errorActions";
+import * as itemsAction from "../actionTypes";
+import {axiosInstance} from "../../api/axiosInstance";
 
 export const getItems =
-  (term = '', pageNumber = 0) =>
+  (term = "", pageNumber = 0) =>
   async (dispatch) => {
     dispatch(setItemsLoading());
     try {
-      const { data, status } = await axios.get(
+      const {data, status} = await axiosInstance.get(
         `/api/items?term=${term}&pageNumber=${pageNumber}`
       );
       dispatch(clearErrors());
-      const { hasMoreData, products } = data;
+      const {hasMoreData, products} = data;
       dispatch({
         type: itemsAction.GET_ITEMS,
-        payload: { products, hasMoreData },
+        payload: {products, hasMoreData},
       });
     } catch (error) {
       dispatch(showError(error.response.data, error.response.status));
@@ -22,17 +22,17 @@ export const getItems =
   };
 
 export const getItemsOnScroll =
-  (term = '', pageNumber = 1) =>
+  (term = "", pageNumber = 1) =>
   async (dispatch) => {
     // dispatch(setItemsLoading())
     try {
-      const { data, status } = await axios.get(
+      const {data, status} = await axiosInstance.get(
         `/api/itemsOnScroll?term=${term}&pageNumber=${pageNumber}`
       );
-      const { products, hasMoreData } = data;
+      const {products, hasMoreData} = data;
       dispatch({
         type: itemsAction.GET_ITEMS_ON_SCROLL,
-        payload: { products, hasMoreData },
+        payload: {products, hasMoreData},
       });
     } catch (error) {
       dispatch(showError(error.response.data, error.response.status));
@@ -41,27 +41,27 @@ export const getItemsOnScroll =
 
 export const addItem = (item) => async (dispatch) => {
   try {
-    const { data } = await axios.post('/api/items', item);
-    dispatch({ type: itemsAction.ADD_ITEM, payload: data });
-  } catch ({ response }) {
+    const {data} = await axiosInstance.post("/api/items", item);
+    dispatch({type: itemsAction.ADD_ITEM, payload: data});
+  } catch ({response}) {
     dispatch(showError(response.data, response.status));
   }
 };
 
 export const deleteItem = (id) => async (dispatch) => {
   try {
-    await axios.delete(`/api/items/${id}`);
-    dispatch({ type: itemsAction.DELETE_ITEM, payload: id });
-  } catch ({ response }) {
+    await axiosInstance.delete(`/api/items/${id}`);
+    dispatch({type: itemsAction.DELETE_ITEM, payload: id});
+  } catch ({response}) {
     dispatch(showError(response.data, response.status));
   }
 };
 
 export const updateItem = (id, item) => async (dispatch) => {
   try {
-    const { data } = await axios.put(`/api/items${id}`, item);
-    dispatch({ type: itemsAction.UPDATE_ITEM, payload: [id, data] });
-  } catch ({ response }) {
+    const {data} = await axiosInstance.put(`/api/items${id}`, item);
+    dispatch({type: itemsAction.UPDATE_ITEM, payload: [id, data]});
+  } catch ({response}) {
     dispatch(showError(response.data, response.status));
   }
 };

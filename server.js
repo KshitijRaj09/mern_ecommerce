@@ -3,10 +3,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const router = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 const mongoURI = process.env.mongoURI;
 const PORT = process.env.PORT || 2000;
+
+const allowedOrigin = process.env.CORS_ORIGIN.split(",").map(
+  (origin) => origin
+);
+app.use(
+  cors({
+    origin: allowedOrigin,
+  })
+);
 
 app.use(express.json());
 
