@@ -42,7 +42,8 @@ async function connectMongoDB() {
   }
 }
 
-app.use("/", (req, res) => {
+app.use("/welcome", (req, res) => {
+  console.log("allowed origin", allowedOrigin);
   res.send("API is running");
 });
 
