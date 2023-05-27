@@ -32,10 +32,6 @@ async function connectMongoDB() {
       useUnifiedTopology: true,
     });
 
-    app.get("/", (req, res) => {
-      res.send("API is running");
-    });
-
     app.listen(PORT, () => {
       console.log(
         `Server listening @ PORT ${PORT} && MongoDB running @ PORT ${connections[0].port})`
@@ -45,5 +41,9 @@ async function connectMongoDB() {
     console.log(error);
   }
 }
+
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 connectMongoDB();
