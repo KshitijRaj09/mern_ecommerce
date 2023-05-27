@@ -5,6 +5,10 @@
       {
          "src": "server.js",
          "use": "@vercel/node"
+      },
+      {
+         "src": "/ui_reactjs/build/*",
+         "use": "@now/static"
       }
    ],
    "routes": [
