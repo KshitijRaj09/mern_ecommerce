@@ -1,16 +1,3 @@
 {
-   "version": 2,
-   "name": "mern_ecommerce",
-   "builds": [
-      {
-         "src": "server.js",
-         "use": "@vercel/node"
-      }
-   ],
-   "routes": [
-      {
-         "src": "/(.*)",
-         "dest": "/server.js"
-      }
-   ]
+  "rewrites": [{"source": "/(.*)", "destination": "/server.js"}]
 }
