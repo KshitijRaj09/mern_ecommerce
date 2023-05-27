@@ -42,7 +42,7 @@ async function connectMongoDB() {
   }
 }
 
-app.get("/", (req, res) => {
+app.use("/", (req, res) => {
   res.send("API is running");
 });
 
